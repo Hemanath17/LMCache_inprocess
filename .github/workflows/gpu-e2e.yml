@@ -1,0 +1,44 @@
+name: GPU end-to-end
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: Hugging Face model id available to the runner
+        required: true
+        default: Qwen/Qwen3-0.6B
+
+permissions:
+  contents: read
+
+jobs:
+  h200-vllm:
+    runs-on: [self-hosted, linux, x64, gpu, h200]
+    timeout-minutes: 60
+    env:
+      LMCACHE_E2E_MODEL: ${{ inputs.model }}
+      TORCH_CUDA_ARCH_LIST: "9.0"
+      MAX_JOBS: "1"
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+      - name: Install LMCache, vLLM, and this wheel
+        run: |
+          python -m pip install --upgrade pip build
+          python -m pip install \
+            'lmcache @ git+https://github.com/LMCache/LMCache.git@dev'
+          python -m pip install vllm
+          python -m build --wheel
+          python -m pip install --no-deps --force-reinstall dist/lmcache_inprocess-*.whl
+      - name: Run two-request cache-hit validation
+        run: scripts/run_gpu_e2e.sh "${RUNNER_TEMP}/vllm-e2e.log"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: always()
+        with:
+          name: vllm-e2e-log
+          path: ${{ runner.temp }}/vllm-e2e.log
+          if-no-files-found: warn

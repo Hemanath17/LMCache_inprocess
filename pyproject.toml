@@ -1,0 +1,104 @@
+[build-system]
+requires = [
+    "setuptools>=77.0.3,<81.0.0",
+    "setuptools_scm>=8",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lmcache_inprocess"
+authors = [{name = "LMCache Team", email = "lmcacheteam@gmail.com"}]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+readme = "README.md"
+description = "The legacy in-process execution mode for LMCache."
+requires-python = ">=3.10,<3.15"
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Operating System :: POSIX :: Linux",
+    "Environment :: GPU",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    # This repository was split from LMCache after v0.5.7rc3.  Keep the
+    # lower bound explicit because the in-process modules use shared APIs
+    # introduced on that release line.
+    "lmcache>=0.5.7rc3",
+]
+
+[project.scripts]
+lmcache-inprocess-controller = "lmcache.inprocess.v1.api_server.__main__:main"
+lmcache-inprocess-standalone = "lmcache.inprocess.standalone.__main__:main"
+
+[project.urls]
+homepage = "https://github.com/LMCache/LMCache_inprocess"
+source = "https://github.com/LMCache/LMCache_inprocess"
+issues = "https://github.com/LMCache/LMCache_inprocess/issues"
+upstream = "https://github.com/LMCache/LMCache"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = [""]
+include = [
+    "lmcache.inprocess",
+    "lmcache.inprocess.*",
+    "lmcache.integration.vllm",
+]
+namespaces = true
+
+[tool.setuptools_scm]
+version_file = "lmcache/inprocess/_version.py"
+fallback_version = "0.1.0.dev0"
+local_scheme = "no-local-version"
+tag_regex = "^v?(?P<version>\\d+\\.\\d+\\.\\d+.*)$"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "G004", "PLE1205", "TID251"]
+ignore = ["F405", "F403", "E731", "B007", "UP032"]
+
+[tool.ruff.lint.per-file-ignores]
+"lmcache/inprocess/v1/storage_backend/legacy_serde/cachegen_basics.py" = ["G004"]
+"lmcache/inprocess/v1/storage_backend/legacy_serde/**" = ["TID251"]
+
+[tool.ruff.lint.isort]
+from-first = true
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"pickle".msg = "Use a data-only serialization format instead."
+
+[tool.mypy]
+platform = "linux"
+modules = ["lmcache.inprocess", "tests.inprocess"]
+ignore_missing_imports = true
+explicit_package_bases = true
+check_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_defs = false
+disallow_untyped_calls = false
+warn_return_any = false
+follow_imports = "silent"
+
+[tool.codespell]
+ignore-words-list = "afterall,allready,notin,te,cann,wqs"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "cuda: requires a CUDA accelerator",
+    "no_shared_allocator: disables the shared allocator test fixture",
+]

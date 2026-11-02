@@ -1,0 +1,4 @@
+include LICENSE
+include README.md
+include UPSTREAM_REVISION
+recursive-include lmcache/inprocess/v1/cache_controller/frontend/static *

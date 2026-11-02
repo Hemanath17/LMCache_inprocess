@@ -1,0 +1,10 @@
+build
+codespell
+isort
+mypy
+pre-commit
+pytest>=7.0,<9.1
+pytest-asyncio
+pytest-benchmark
+ruff
+twine
