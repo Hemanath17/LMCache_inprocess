@@ -29,6 +29,13 @@
   `TORCH_CUDA_ARCH_LIST=9.0 MAX_JOBS=1` unless broader targets are required.
 - `vllm/vllm-openai:latest` starts `vllm serve`; use `--entrypoint bash` for
   build and debug containers.
+- For an InProcess-specific vLLM E2E, do not rely only on the registered
+  `LMCacheConnectorV1` name: current vLLM resolves that name through its own
+  wrapper module. Set `kv_connector` to `LMCacheConnectorV1Dynamic` and
+  `kv_connector_module_path` to
+  `lmcache.inprocess.integration.vllm.lmcache_connector_v1`, then require the
+  log to show that exact module path, a non-zero `LMCache hit tokens` value on
+  the second request, and no `LMCacheMPConnector` creation.
 
 ## Contributions
 

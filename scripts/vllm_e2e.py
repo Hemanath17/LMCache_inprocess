@@ -2,6 +2,7 @@
 """Exercise two vLLM requests with a shared prefix through LMCache InProcess."""
 
 # Standard
+import importlib
 import os
 
 # Third Party
@@ -11,6 +12,14 @@ from vllm.config import KVTransferConfig
 
 def main() -> None:
     """Run two requests whose second prompt must reuse the first prompt's KV."""
+    connector_module_path = "lmcache.inprocess.integration.vllm.lmcache_connector_v1"
+    connector_module = importlib.import_module(connector_module_path)
+    connector_file = connector_module.__file__
+    assert connector_file is not None
+    assert connector_file.endswith("/lmcache_connector_v1.py")
+    print(f"LMCACHE_INPROCESS_CONNECTOR_MODULE={connector_module_path}")
+    print(f"LMCACHE_INPROCESS_CONNECTOR_FILE={connector_file}")
+
     model = os.environ.get("LMCACHE_E2E_MODEL", "Qwen/Qwen3-0.6B")
     shared_prefix = (
         "LMCache stores reusable key value tensors for language model inference. "
@@ -20,7 +29,8 @@ def main() -> None:
     llm = LLM(
         model=model,
         kv_transfer_config=KVTransferConfig(
-            kv_connector="LMCacheConnectorV1",
+            kv_connector="LMCacheConnectorV1Dynamic",
+            kv_connector_module_path=connector_module_path,
             kv_role="kv_both",
         ),
         max_model_len=2048,
