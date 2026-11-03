@@ -17,6 +17,9 @@
 - Record every imported upstream snapshot in `UPSTREAM_REVISION` and keep its
   dependency lower bound synchronized with the first compatible LMCache
   release.
+- `scripts/sync_from_lmcache.sh` must accept both ordinary clones and linked
+  Git worktrees. Detect a repository with `git rev-parse`; do not assume that
+  `<upstream>/.git` is a directory.
 
 ## Validation
 

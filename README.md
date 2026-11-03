@@ -10,8 +10,8 @@ The wheel also supplies
 vLLM's connector imports that canonical path. The implementation remains under
 `lmcache.inprocess.integration.vllm`.
 
-The initial source snapshot is copied from LMCache `dev` commit
-[`95ced2b137e3d854de662a45dd3c6ca3fee0753b`](https://github.com/LMCache/LMCache/commit/95ced2b137e3d854de662a45dd3c6ca3fee0753b).
+The source snapshot is synchronized through LMCache `dev` commit
+[`386473dad97fdad4112a7333bc6604185acfd084`](https://github.com/LMCache/LMCache/commit/386473dad97fdad4112a7333bc6604185acfd084).
 The exact source revision is also recorded in [`UPSTREAM_REVISION`](UPSTREAM_REVISION).
 
 ## Install

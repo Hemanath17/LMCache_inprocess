@@ -100,5 +100,7 @@ ignore-words-list = "afterall,allready,notin,te,cann,wqs"
 testpaths = ["tests"]
 markers = [
     "cuda: requires a CUDA accelerator",
+    "musa: requires a MUSA accelerator",
     "no_shared_allocator: disables the shared allocator test fixture",
+    "xpu: requires an XPU accelerator",
 ]

@@ -25,7 +25,7 @@ Configuration
 -------------
 
 Create two configuration files for the P2P sharing setup.
- 
+
 
 **Instance 1 Configuration (example1.yaml)**:
 
@@ -175,7 +175,7 @@ Send a request workload to instance 1 to populate the cache:
 
 .. code-block:: bash
 
-    python benchmarks/inprocess/long_doc_qa/long_doc_qa.py \
+    python benchmarks/long_doc_qa/long_doc_qa.py \
     --model meta-llama/Meta-Llama-3.1-8B-Instruct \
     --num-documents 50 \
     --document-length 10000 \
@@ -189,7 +189,7 @@ Send the same request workload to instance 2 to demonstrate cache retrieval from
 
 .. code-block:: bash
 
-    python benchmarks/inprocess/long_doc_qa/long_doc_qa.py \
+    python benchmarks/long_doc_qa/long_doc_qa.py \
     --model meta-llama/Meta-Llama-3.1-8B-Instruct \
     --num-documents 50 \
     --document-length 10000 \
@@ -206,12 +206,12 @@ Benchmark Results
 First instance metrics:
 
 .. code-block:: text
- 
+
     Warmup round mean TTFT: 2.286s
     Warmup round time: 37.957s
     Warmup round prompt count: 50
     Warmup round successful prompt count: 50
-    
+
     === BENCHMARK RESULTS ===
     Query round mean TTFT: 2.028s
     Query round time: 38.323s
@@ -221,12 +221,12 @@ First instance metrics:
 Second instance metrics:
 
 .. code-block:: text
- 
+
     Warmup round mean TTFT: 1.036s
     Warmup round time: 13.814s
     Warmup round prompt count: 50
     Warmup round successful prompt count: 50
-    
+
     === BENCHMARK RESULTS ===
     Query round mean TTFT: 0.490s
     Query round time: 7.964s
@@ -234,4 +234,3 @@ Second instance metrics:
     Query round successful prompt count: 50
 
 In this example, the warm-up round metric in long_doc_qa is used because no existing KV cache is reused within an instance to benefit solely from P2P sharing. With LMCache P2P sharing enabled, the time to first token (TTFT) is reduced by 54.7%, from 2.286 s to 1.036 s, with a 63.6% reduction in total inference time (37.957 s → 13.814 s).
-

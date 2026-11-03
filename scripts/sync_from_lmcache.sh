@@ -10,22 +10,35 @@ fi
 upstream_root="$(cd "$1" && pwd)"
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-if [[ ! -d "${upstream_root}/.git" || ! -d "${upstream_root}/lmcache/inprocess" ]]; then
+if ! git -C "${upstream_root}" rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+  || [[ ! -d "${upstream_root}/lmcache/inprocess" ]]; then
   echo "not an LMCache checkout: ${upstream_root}" >&2
   exit 2
 fi
 
 revision="$(git -C "${upstream_root}" rev-parse HEAD)"
-ref="$(git -C "${upstream_root}" branch --show-current)"
+ref="$(git -C "${upstream_root}" symbolic-ref --short -q HEAD || printf 'detached')"
 
 rsync -a --delete --exclude='__pycache__' --exclude='*.pyc' \
   "${upstream_root}/lmcache/inprocess/" "${repo_root}/lmcache/inprocess/"
 rsync -a --delete --exclude='__pycache__' --exclude='*.pyc' \
   "${upstream_root}/tests/inprocess/" "${repo_root}/tests/inprocess/"
+# InProcess tests import these shared test-only helpers. They are not packaged.
+(
+  cd "${upstream_root}"
+  rsync -a --relative \
+    ./tests/v1/__init__.py \
+    ./tests/v1/utils.py \
+    ./tests/v1/platform/__init__.py \
+    ./tests/v1/platform/devices/musa/staging_copy_utils.py \
+    "${repo_root}/"
+)
 rsync -a --delete \
   "${upstream_root}/examples/inprocess/" "${repo_root}/examples/inprocess/"
 rsync -a --delete \
   "${upstream_root}/benchmarks/inprocess/" "${repo_root}/benchmarks/inprocess/"
+rsync -a --delete \
+  "${upstream_root}/benchmarks/long_doc_qa/" "${repo_root}/benchmarks/long_doc_qa/"
 rsync -a --delete \
   "${upstream_root}/docs/source/legacy/" "${repo_root}/docs/source/legacy/"
 
