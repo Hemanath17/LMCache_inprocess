@@ -71,6 +71,7 @@ and tests compatibility against a pinned LMCache revision and current LMCache
 - `tests/inprocess/`: copied unit and integration tests
 - `examples/inprocess/`: in-process examples
 - `benchmarks/inprocess/`: in-process benchmarks
+- `docs/source/legacy/`: in-process documentation migrated from LMCache
 - `scripts/sync_from_lmcache.sh`: reproducible upstream refresh helper
 
 ## Release

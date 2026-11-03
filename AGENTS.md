@@ -4,8 +4,8 @@
 
 - The distribution name is `lmcache_inprocess`, while its import namespace is
   `lmcache.inprocess` for compatibility with existing integrations.
-- This repository owns `lmcache/inprocess/**` plus the single compatibility
-  shim `lmcache/integration/vllm/vllm_v1_adapter.py` required by vLLM's
+- This repository owns `lmcache/inprocess/**`, `docs/source/legacy/**`, plus the
+  single compatibility shim `lmcache/integration/vllm/vllm_v1_adapter.py` required by vLLM's
   canonical connector import. Do not add `lmcache/__init__.py` or copy shared
   `lmcache/v1/**` modules; those belong to the `lmcache` dependency.
 - Native extensions are built and shipped by LMCache. This project must remain

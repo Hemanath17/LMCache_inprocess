@@ -26,6 +26,8 @@ rsync -a --delete \
   "${upstream_root}/examples/inprocess/" "${repo_root}/examples/inprocess/"
 rsync -a --delete \
   "${upstream_root}/benchmarks/inprocess/" "${repo_root}/benchmarks/inprocess/"
+rsync -a --delete \
+  "${upstream_root}/docs/source/legacy/" "${repo_root}/docs/source/legacy/"
 
 python3 - "${repo_root}/UPSTREAM_REVISION" "${revision}" "${ref}" <<'PY'
 from datetime import date
