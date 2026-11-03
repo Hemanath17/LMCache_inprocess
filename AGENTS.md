@@ -17,6 +17,9 @@
 - Record every imported upstream snapshot in `UPSTREAM_REVISION` and keep its
   dependency lower bound synchronized with the first compatible LMCache
   release.
+- `UPSTREAM_REVISION` is a key/value manifest; CI installers must read the
+  `revision=<40-character-sha>` entry rather than treating its first line as
+  the revision.
 - `scripts/sync_from_lmcache.sh` must accept both ordinary clones and linked
   Git worktrees. Detect a repository with `git rev-parse`; do not assume that
   `<upstream>/.git` is a directory.
