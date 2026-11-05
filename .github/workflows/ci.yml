@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  LMCACHE_PINNED_REVISION: 386473dad97fdad4112a7333bc6604185acfd084
+  LMCACHE_PINNED_REVISION: 05fdc2013b41484f0d834ec2d30b019fd426a56c
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
 
 jobs:
@@ -49,7 +49,7 @@ jobs:
       matrix:
         python: ["3.10", "3.12", "3.13"]
         lmcache_ref:
-          - 386473dad97fdad4112a7333bc6604185acfd084
+          - 05fdc2013b41484f0d834ec2d30b019fd426a56c
         include:
           - python: "3.12"
             lmcache_ref: dev

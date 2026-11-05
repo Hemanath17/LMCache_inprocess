@@ -11,7 +11,7 @@ vLLM's connector imports that canonical path. The implementation remains under
 `lmcache.inprocess.integration.vllm`.
 
 The source snapshot is synchronized through LMCache `dev` commit
-[`386473dad97fdad4112a7333bc6604185acfd084`](https://github.com/LMCache/LMCache/commit/386473dad97fdad4112a7333bc6604185acfd084).
+[`05fdc2013b41484f0d834ec2d30b019fd426a56c`](https://github.com/LMCache/LMCache/commit/05fdc2013b41484f0d834ec2d30b019fd426a56c).
 The exact source revision is also recorded in [`UPSTREAM_REVISION`](UPSTREAM_REVISION).
 
 ## Install
