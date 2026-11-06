@@ -23,6 +23,10 @@
 - `scripts/sync_from_lmcache.sh` must accept both ordinary clones and linked
   Git worktrees. Detect a repository with `git rev-parse`; do not assume that
   `<upstream>/.git` is a directory.
+- After extraction-specific path or documentation adaptations exist, do not
+  blindly run the full-tree sync for a later upstream PR. Audit that PR's exact
+  merge diff and import only its InProcess-owned changed paths; otherwise the
+  broad `rsync --delete` pass can overwrite standalone-only adaptations.
 
 ## Validation
 
